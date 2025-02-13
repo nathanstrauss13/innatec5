@@ -52,3 +52,14 @@
     </div>
 </body>
 </html>
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    print("Index route accessed!")  # Add this debug line
+    if request.method == "POST":
+        user_query = request.form.get("query")
+        if not user_query:
+            flash("Please enter a query.")
+            return redirect(url_for("index"))
+        return redirect(url_for("result", q=user_query))
+    return render_template("simple_index.html")

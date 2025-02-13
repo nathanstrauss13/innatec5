@@ -8,11 +8,6 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from anthropic import Anthropic
 
-from dotenv import load_dotenv
-load_dotenv()
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
-openai.api_key = OPENAI_API_KEY
-
 # Initialize Flask app
 app = Flask(__name__)
 
@@ -34,11 +29,22 @@ print("NEWS_API_KEY present:", bool(NEWS_API_KEY))
 print("OPENAI_API_KEY prefix:", OPENAI_API_KEY[:7] if OPENAI_API_KEY else "Not found")
 print("ANTHROPIC_API_KEY present:", bool(ANTHROPIC_API_KEY))
 
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
+print("ANTHROPIC_API_KEY loaded:", ANTHROPIC_API_KEY[:10] + "..." if ANTHROPIC_API_KEY else "Not found")
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load variables from .env
+
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+print("OPENAI_API_KEY loaded:", OPENAI_API_KEY)  # For debugging only
+
 # Set Flask secret key
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "your_secret_key_here")
 
 # Initialize API clients
-client = OpenAI(api_key=OPENAI_API_KEY)  # Updated OpenAI client initialization
+client = OpenAI(api_key=OPENAI_API_KEY)  # Initialize OpenAI client
 anthropic = Anthropic(api_key=ANTHROPIC_API_KEY)
 
 def extract_query_parameters(user_prompt):
